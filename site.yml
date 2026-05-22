@@ -9,4 +9,4 @@
     - ssh_hardening
     - firewall
     - observability
-    # - secrets
+    - secrets
