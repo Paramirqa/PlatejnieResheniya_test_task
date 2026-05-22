@@ -1,0 +1,8 @@
+---
+- name: Create ops user
+  user:
+    name: "{{ ops_user }}"
+    groups: sudo
+    append: true
+    shell: /bin/bash
+    create_home: true
