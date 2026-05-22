@@ -8,5 +8,5 @@
     - users
     - ssh_hardening
     - firewall
-    - observability
-    - secrets
+    # - observability
+    # - secrets
