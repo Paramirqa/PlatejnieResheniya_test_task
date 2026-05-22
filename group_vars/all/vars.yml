@@ -1,0 +1,11 @@
+ops_user: ops
+
+base_packages:
+  - fail2ban
+  - auditd
+  - curl
+  - jq
+
+node_exporter_version: "1.8.1"
+
+node_exporter_listen_address: "127.0.0.1:9100"
