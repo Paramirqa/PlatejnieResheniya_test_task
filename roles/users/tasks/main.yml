@@ -18,5 +18,5 @@
 - name: Add SSH authorized key
   authorized_key:
     user: "{{ ops_user }}"
-    key: "{{ lookup('file', 'authorized_keys') }}"
-    manage_dir: false
+    key: "{{ lookup('file', role_path + '/files/authorized_keys') }}"
+    state: present
