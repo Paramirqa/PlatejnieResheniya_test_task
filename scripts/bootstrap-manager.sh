@@ -1,38 +1,42 @@
 #!/usr/bin/env bash
-
 set -e
 
-echo "=== Updating system ==="
+echo "=== SYSTEM UPDATE ==="
 apt update
 
-echo "=== Installing system dependencies ==="
+echo "=== SYSTEM PACKAGES (NO PYTHON CONFLICTS) ==="
 apt install -y \
   ansible \
   sshpass \
-  python3 \
-  python3-pip \
-  python3-venv \
   docker.io \
+  python3 \
+  python3-venv \
+  python3-pip \
   git \
-  curl
+  curl \
+  jq
 
-echo "=== Starting Docker ==="
+echo "=== ENABLE DOCKER ==="
 systemctl enable docker
 systemctl start docker
 
-echo "=== Adding vagrant user to docker group ==="
 usermod -aG docker vagrant || true
 
-echo "=== Upgrading pip ==="
-pip3 install --upgrade pip
+echo "=== CREATE ISOLATED PYTHON ENV FOR MOLECULE ==="
 
-echo "=== Installing Python tools ==="
-pip3 install \
+sudo -u vagrant bash <<EOF
+python3 -m venv /home/vagrant/venv-molecule
+source /home/vagrant/venv-molecule/bin/activate
+
+pip install --upgrade pip setuptools wheel
+
+pip install \
   molecule \
   molecule-plugins[docker] \
-  ansible \
   docker \
-  yamllint \
-  ansible-lint
+  ansible-lint \
+  yamllint
+EOF
 
-echo "=== Bootstrap completed successfully ==="
+echo "=== DONE ==="
+echo "Activate molecule env with: source ~/venv-molecule/bin/activate"
