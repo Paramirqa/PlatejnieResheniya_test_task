@@ -46,3 +46,13 @@
     enabled: true
     state: started
     daemon_reload: true
+
+- name: Remove node_exporter archive
+  file:
+    path: "/tmp/node_exporter-{{ node_exporter_version }}.tar.gz"
+    state: absent
+
+- name: Remove extracted node_exporter directory
+  file:
+    path: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64"
+    state: absent

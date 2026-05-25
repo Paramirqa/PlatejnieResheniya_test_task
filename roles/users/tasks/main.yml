@@ -6,3 +6,11 @@
     append: true
     shell: /bin/bash
     create_home: true
+    
+- name: Create .ssh directory
+  file:
+    path: "/home/{{ ops_user }}/.ssh"
+    state: directory
+    owner: "{{ ops_user }}"
+    group: "{{ ops_user }}"
+    mode: "0700"
