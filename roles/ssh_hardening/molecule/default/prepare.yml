@@ -1,0 +1,16 @@
+---
+- name: Prepare instance
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install openssh-server
+      apt:
+        name: openssh-server
+        state: present
+        update_cache: true
+
+    - name: Ensure /etc/ssh exists
+      file:
+        path: /etc/ssh
+        state: directory
