@@ -50,11 +50,14 @@ vagrant ssh manager
 ### 3. Перейти в проект
 
 ```bash
-cd ~/vagrant
+cd /vagrant
 ```
 
 ---
-
+## Копируем ключ 
+```bash
+cp /vagrant/.vagrant/machines/server1/virtualbox/private_key ~/.ssh/server1_key
+```
 ## Запуск playbook
 
 ```bash
