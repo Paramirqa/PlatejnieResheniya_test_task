@@ -10,3 +10,4 @@
     - firewall
     - observability
     - secrets
+    - health_check
