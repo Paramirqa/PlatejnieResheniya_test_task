@@ -50,7 +50,7 @@ vagrant ssh manager
 ### 3. Перейти в проект
 
 ```bash
-cd ~/ansible-devops-test
+cd ~/vagrant
 ```
 
 ---
