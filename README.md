@@ -181,6 +181,7 @@ ansible-playbook site.yml --ask-vault-pass
 
 ## Ключевая идея
 
+
 Проект демонстрирует production-style подход:
 
 - модульная архитектура Ansible
@@ -188,3 +189,117 @@ ansible-playbook site.yml --ask-vault-pass
 - идемпотентность
 - observability
 - инфраструктурные проверки
+
+## Molecule (тестирование ролей)
+
+Проект использует **Molecule** для тестирования Ansible-роли `ssh_hardening` в изолированной среде Docker.
+
+Molecule позволяет автоматически проверить:
+- корректность синтаксиса роли
+- успешное применение конфигурации
+- наличие обязательных файлов и настроек SSH
+- идемпотентность роли
+- базовую проверку безопасности
+
+---
+
+### Архитектура теста
+
+Molecule запускает тестовый сценарий:
+
+```
+create → prepare → converge → verify → destroy
+```
+
+Где:
+
+- **create** — поднимает Docker контейнер
+- **prepare** — устанавливает openssh-server и runtime зависимости
+- **converge** — применяет роль `ssh_hardening`
+- **verify** — проверяет результат настройки
+- **destroy** — удаляет тестовую среду
+
+---
+
+### Запуск Molecule
+
+Перейти в директорию роли:
+
+```bash
+source ~/venv-molecule/bin/activate
+```
+
+Проверка, что molecule доступен:
+
+```bash
+molecule --version
+```
+
+Запуск полного теста:
+
+```bash
+molecule test
+```
+
+---
+
+### Запуск отдельных стадий
+
+```bash
+molecule create
+molecule converge
+molecule verify
+molecule destroy
+```
+
+---
+
+### Что проверяется
+
+#### SSH конфигурация
+
+```bash
+sshd -T
+```
+
+Проверяется:
+- отключён root login
+- отключена password authentication
+- применены ограничения доступа
+
+---
+
+#### Наличие SSH конфигурации
+
+```bash
+ls -l /etc/ssh/sshd_config
+```
+
+---
+
+#### Корректность SSH конфигурации
+
+```bash
+sshd -t
+```
+
+---
+
+### Особенности запуска в Docker
+
+Molecule использует контейнерную среду, поэтому:
+
+- systemd отсутствует или ограничен
+- некоторые runtime директории создаются в prepare stage
+- сервис SSH не управляется через systemctl
+
+---
+
+### Почему Molecule используется
+
+Molecule добавлен для:
+
+- тестирования роли без Vagrant/VM
+- проверки идемпотентности
+- безопасной проверки изменений SSH конфигурации
+- ускорения CI/CD пайплайна
