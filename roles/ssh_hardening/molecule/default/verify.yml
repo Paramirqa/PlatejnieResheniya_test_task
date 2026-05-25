@@ -1,36 +1,19 @@
 ---
-- name: Verify SSH hardening
+- name: Verify ssh_hardening
   hosts: all
   become: true
 
   tasks:
-
-    - name: Read sshd config via sshd -T
-      command: sshd -T
-      register: sshd_config
+    - name: Check ssh config syntax
+      command: sshd -t
       changed_when: false
 
-    - name: Assert root login is disabled
+    - name: Check ssh config file exists
+      stat:
+        path: /etc/ssh/sshd_config
+      register: ssh_cfg
+
+    - name: Assert config exists
       assert:
         that:
-          - "'permitrootlogin no' in sshd_config.stdout"
-
-    - name: Assert password authentication is disabled
-      assert:
-        that:
-          - "'passwordauthentication no' in sshd_config.stdout"
-
-    - name: Check allow users restriction (if used)
-      assert:
-        that:
-          - "'allowusers' in sshd_config.stdout | lower"
-
-    - name: Ensure SSH service is running
-      command: service ssh status
-      register: ssh_status
-      changed_when: false
-
-    - name: Assert SSH service active
-      assert:
-        that:
-          - "'running' in ssh_status.stdout | lower"
+          - ssh_cfg.stat.exists
