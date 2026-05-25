@@ -14,13 +14,15 @@
   command: curl -s http://127.0.0.1:9100/metrics
   register: node_exporter_metrics
   changed_when: false
+  args:
+    warn: false 
 
 - name: Assert node_exporter metrics are available
   assert:
     that:
       - "'node_cpu_seconds_total' in node_exporter_metrics.stdout"
     fail_msg: "Node exporter metrics are unavailable"
-    
+
 - name: Check UFW status
   command: ufw status
   register: ufw_status
