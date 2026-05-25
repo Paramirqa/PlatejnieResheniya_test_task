@@ -10,7 +10,12 @@
         state: present
         update_cache: true
 
-    - name: Ensure /etc/ssh exists
+    - name: Ensure /run/sshd exists
       file:
-        path: /etc/ssh
+        path: /run/sshd
         state: directory
+        mode: '0755'
+
+    - name: Generate SSH host keys
+      command: ssh-keygen -A
+      changed_when: false
