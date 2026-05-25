@@ -11,19 +11,16 @@
     fail_msg: "SSH service is not running"
 
 - name: Check node_exporter metrics endpoint
-  uri:
-    url: http://127.0.0.1:9100/metrics
-    method: GET
-    status_code: 200
+  command: curl -s http://127.0.0.1:9100/metrics
   register: node_exporter_metrics
   changed_when: false
 
 - name: Assert node_exporter metrics are available
   assert:
     that:
-      - "'node_cpu_seconds_total' in node_exporter_metrics.content"
+      - "'node_cpu_seconds_total' in node_exporter_metrics.stdout"
     fail_msg: "Node exporter metrics are unavailable"
-
+    
 - name: Check UFW status
   command: ufw status
   register: ufw_status
