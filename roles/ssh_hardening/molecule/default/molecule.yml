@@ -6,12 +6,14 @@ driver:
   name: docker
 
 platforms:
-  - name: instance
+  - name: ssh-hardening-instance
     image: geerlingguy/docker-ubuntu2204-ansible
     privileged: true
 
 provisioner:
   name: ansible
+  playbooks:
+    converge: converge.yml
 
 verifier:
   name: ansible

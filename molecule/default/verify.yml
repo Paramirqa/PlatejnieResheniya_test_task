@@ -1,9 +1,0 @@
----
-- name: Verify
-  hosts: all
-
-  tasks:
-    - name: Check ssh is reachable
-      wait_for:
-        port: 22
-        timeout: 5
