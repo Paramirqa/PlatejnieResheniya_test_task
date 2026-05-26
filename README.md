@@ -64,6 +64,24 @@ cp /vagrant/.vagrant/machines/server1/virtualbox/private_key ~/.ssh/server1_key
 ansible-playbook site.yml --ask-vault-pass
 ```
 
+
+
+## Как передать vault password
+
+При выполнении команды Ansible запросит пароль:
+
+```
+Vault password:
+```
+
+Пример для тестового задания:
+
+```
+vault123
+```
+
+---
+
 ### Повторный запуск playbook
 
 После первого bootstrap playbook пользователь `ops` уже создан и используется для дальнейшего управления сервером.
@@ -91,22 +109,6 @@ ansible-playbook site.yml --ask-vault-pass
 
 ```bash
 ssh -i ~/.ssh/server1_key ops@192.168.56.11
-```
-
----
-
-## Как передать vault password
-
-При выполнении команды Ansible запросит пароль:
-
-```
-Vault password:
-```
-
-Пример для тестового задания:
-
-```
-vault123
 ```
 
 ---
@@ -262,6 +264,12 @@ source ~/venv-molecule/bin/activate
 
 ```bash
 molecule --version
+```
+
+Переходим в директорию с molecule 
+
+```bash
+cd roles/ssh_hardening/
 ```
 
 Запуск полного теста:
