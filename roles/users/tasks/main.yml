@@ -7,6 +7,15 @@
     shell: /bin/bash
     create_home: true
 
+- name: Configure passwordless sudo for ops
+  copy:
+    dest: /etc/sudoers.d/ops
+    content: "ops ALL=(ALL) NOPASSWD:ALL"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "/usr/sbin/visudo -cf %s"
+
 - name: Create .ssh directory
   file:
     path: "/home/{{ ops_user }}/.ssh"
