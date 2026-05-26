@@ -64,6 +64,35 @@ cp /vagrant/.vagrant/machines/server1/virtualbox/private_key ~/.ssh/server1_key
 ansible-playbook site.yml --ask-vault-pass
 ```
 
+### Повторный запуск playbook
+
+После первого bootstrap playbook пользователь `ops` уже создан и используется для дальнейшего управления сервером.
+
+Перед повторным запуском необходимо изменить `inventory.ini`:
+
+```ini
+[servers]
+server1 ansible_host=192.168.56.11
+
+[servers:vars]
+ansible_user=ops
+ansible_ssh_private_key_file=/home/vagrant/.ssh/server1_key
+```
+
+После этого playbook можно запускать повторно:
+
+```bash
+ansible-playbook site.yml --ask-vault-pass
+```
+
+### Подключение по SSH под пользователем ops
+
+После выполнения playbook подключение выполняется по SSH-ключу:
+
+```bash
+ssh -i ~/.ssh/server1_key ops@192.168.56.11
+```
+
 ---
 
 ## Как передать vault password
