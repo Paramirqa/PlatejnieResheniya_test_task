@@ -1,6 +1,6 @@
 ops_user: ops
 
-ops_public_key: "{{ lookup ('file', 'roles/users/files/authorized_keys') }}"
+ops_public_key: "{{ lookup('pipe', 'ssh-keygen -y -f ~/.ssh/server1_key') }}"
 
 base_packages:
   - fail2ban
