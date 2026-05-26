@@ -1,0 +1,12 @@
+.vagrant/
+*.retry
+
+__pycache__/
+*.pyc
+
+*.vault_pass
+
+.DS_Store
+
+.idea/
+.vscode/

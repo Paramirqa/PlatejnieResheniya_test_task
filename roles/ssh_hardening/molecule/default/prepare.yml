@@ -1,0 +1,21 @@
+---
+- name: Prepare instance
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install openssh-server
+      apt:
+        name: openssh-server
+        state: present
+        update_cache: true
+
+    - name: Ensure /run/sshd exists
+      file:
+        path: /run/sshd
+        state: directory
+        mode: "0755"
+
+    - name: Generate SSH host keys
+      command: ssh-keygen -A
+      changed_when: false

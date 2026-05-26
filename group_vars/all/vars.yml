@@ -1,0 +1,14 @@
+ops_user: ops
+
+ops_public_key: "{{ lookup('pipe', 'ssh-keygen -y -f ~/.ssh/server1_key') }}"
+
+base_packages:
+  - fail2ban
+  - auditd
+  - curl
+  - jq
+
+node_exporter_version: "1.8.1"
+
+node_exporter_listen_address: "127.0.0.1:9100"
+

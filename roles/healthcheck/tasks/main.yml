@@ -1,0 +1,36 @@
+---
+- name: Check SSH service
+  systemd:
+    name: ssh
+  register: ssh_service
+  failed_when: false
+
+- name: Assert SSH is running
+  assert:
+    that:
+      - ssh_service.status.ActiveState == "active"
+    fail_msg: "SSH service is not running"
+
+- name: Check node_exporter metrics endpoint
+  command: curl -s http://127.0.0.1:9100/metrics
+  register: node_exporter_metrics
+  changed_when: false
+  failed_when: false
+
+- name: Assert node_exporter metrics are available
+  assert:
+    that:
+      - "'node_cpu_seconds_total' in node_exporter_metrics.stdout"
+    fail_msg: "Node exporter metrics are unavailable"
+
+- name: Check UFW status
+  command: ufw status
+  register: ufw_status
+  changed_when: false
+  failed_when: false
+
+- name: Assert UFW is active
+  assert:
+    that:
+      - "'Status: active' in ufw_status.stdout"
+    fail_msg: "UFW is not active"

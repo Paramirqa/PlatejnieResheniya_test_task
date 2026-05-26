@@ -1,0 +1,32 @@
+---
+- name: Create ops user
+  user:
+    name: "{{ ops_user }}"
+    groups: sudo
+    append: true
+    shell: /bin/bash
+    create_home: true
+
+- name: Configure passwordless sudo for ops
+  copy:
+    dest: /etc/sudoers.d/ops
+    content: "ops ALL=(ALL) NOPASSWD:ALL"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "/usr/sbin/visudo -cf %s"
+
+- name: Create .ssh directory
+  file:
+    path: "/home/{{ ops_user }}/.ssh"
+    state: directory
+    owner: "{{ ops_user }}"
+    group: "{{ ops_user }}"
+    mode: "0700"
+
+- name: Add SSH authorized key
+  authorized_key:
+    user: "{{ ops_user }}"
+    key: "{{ ops_public_key }}"
+    state: present
+    manage_dir: false

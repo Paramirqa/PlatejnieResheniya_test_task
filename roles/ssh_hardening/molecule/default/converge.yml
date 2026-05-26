@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  vars:
+    ops_user: ops
+
+  roles:
+    - role: ssh_hardening

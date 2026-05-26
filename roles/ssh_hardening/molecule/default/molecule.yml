@@ -1,0 +1,20 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+platforms:
+  - name: ssh-hardening-instance
+    image: geerlingguy/docker-ubuntu2204-ansible
+    privileged: true
+
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: prepare.yml
+    converge: converge.yml
+
+verifier:
+  name: ansible

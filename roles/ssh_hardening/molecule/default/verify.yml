@@ -1,0 +1,19 @@
+---
+- name: Verify ssh_hardening
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Check ssh config syntax
+      command: sshd -t
+      changed_when: false
+
+    - name: Check ssh config file exists
+      stat:
+        path: /etc/ssh/sshd_config
+      register: ssh_cfg
+
+    - name: Assert config exists
+      assert:
+        that:
+          - ssh_cfg.stat.exists
